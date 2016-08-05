@@ -6,3 +6,9 @@ export default ({task, onDelete}) => (
         <button onClick={onDelete}>x</button>
     </div>
 )
+
+export default ({children, ...props}) => (
+    <div {...props}>
+        {children}
+    </div>
+);
