@@ -18,11 +18,12 @@ export default class App extends React.Component {
             ]
         }
     }
+
     render() {
         const {notes} = this.state;
         return (
             <div>
-                <button onClick={this.addNote}>+</button>
+                <button className="add-note" onClick={this.addNote}>+</button>
                 <Notes
                     notes={notes}
                     onNoteClick={this.activateNoteEdit}
@@ -32,6 +33,7 @@ export default class App extends React.Component {
             </div>
         );
     }
+
     addNote = () => {
         this.setState({
             notes: [
@@ -47,7 +49,6 @@ export default class App extends React.Component {
     deleteNote = (id, e) => {
 
         e.stopPropagation();
-
         this.setState({
             notes: this.state.notes.filter(note => note.id != id)
         })
@@ -56,7 +57,7 @@ export default class App extends React.Component {
     activateNoteEdit = (id) => {
         this.setState({
             notes: this.state.notes.map(note => {
-                if(note.id === id) {
+                if (note.id === id) {
                     return {
                         ...note,
                         editing: true
@@ -70,7 +71,7 @@ export default class App extends React.Component {
     editNote = (id, task) => {
         this.setState({
             notes: this.state.notes.map(note => {
-                if(note.id === id) {
+                if (note.id === id) {
                     return {
                         ...note,
                         task: task,
