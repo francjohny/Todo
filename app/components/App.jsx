@@ -1,23 +1,26 @@
 import React from 'react';
-import uuid from 'uuid';
 import Notes from './Notes';
+import axios from 'axios';
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            notes: [
-                {
-                    id: uuid.v4(),
-                    task: 'Learn React'
-                },
-                {
-                    id: uuid.v4(),
-                    task: 'Do laundry'
-                }
-            ]
+            notes: []
         }
     }
+
+    getTODO = () =>
+        axios.get('http://localhost:3000/notes');
+
+    addTODO = (note) =>
+        axios.post('http://localhost:3000/notes',  note);
+
+    deleteTODO = (id) =>
+        axios.delete('http://localhost:3000/notes/' +  id);
+
+    updateTODO = (id, task) =>
+        axios.put('http://localhost:3000/notes/' +  id, task);
 
     render() {
         const {notes} = this.state;
@@ -35,14 +38,20 @@ export default class App extends React.Component {
     }
 
     addNote = () => {
-        this.setState({
-            notes: [
-                ...this.state.notes,
-                {
-                    id: uuid.v4(),
-                    task: 'New task'
-                }
-            ]
+        this.addTODO(JSON.stringify('New task')).then((res) => {
+
+            this.setState({
+                notes: [
+                    ...this.state.notes,
+                    {
+                        id: res.data.id,
+                        task: 'New task'
+                    }
+                ]
+            });
+        })
+        .catch(function (error) {
+            console.log(error);
         });
     }
 
@@ -52,6 +61,7 @@ export default class App extends React.Component {
         this.setState({
             notes: this.state.notes.filter(note => note.id != id)
         })
+        this.deleteTODO(id);
     }
 
     activateNoteEdit = (id) => {
@@ -81,6 +91,7 @@ export default class App extends React.Component {
                 return note;
             })
         });
+        this.updateTODO(id, task);
     }
 }
 
