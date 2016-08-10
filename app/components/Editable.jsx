@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 
 const Editable = ({editing, value, onEdit, className, ...props}) => {
-    if(editing) {
+    if (editing) {
         return <Edit className={className} value={value} onEdit={onEdit} {...props} />;
     }
 
@@ -11,7 +11,7 @@ const Editable = ({editing, value, onEdit, className, ...props}) => {
 
 class Edit extends React.Component {
     render() {
-        const {value, ...props, className} = this.props;
+        const {value, className} = this.props;
 
         return <input
             className={classnames('edit', className)}
@@ -20,7 +20,7 @@ class Edit extends React.Component {
             defaultValue={value}
             onBlur={this.finishEdit}
             onKeyPress={this.checkEnter}
-            {...props} />;
+        />;
     }
 
     checkEnter = (e) => {

@@ -10,53 +10,56 @@ export default class App extends React.Component {
         }
     }
 
-    getTODO = () =>
-        axios.get('http://localhost:3000/notes');
+    componentDidMount() {
+        this.getTODO().then((res) => {
+            this.setState({
+                notes: res.data
+            });
+        });
+    }
 
-    addTODO = (note) =>
-        axios.post('http://localhost:3000/notes',  note);
+    getTODO = () => axios.get('http://localhost:3000/notes');
 
-    deleteTODO = (id) =>
-        axios.delete('http://localhost:3000/notes/' +  id);
+    addTODO = (note) => axios.post('http://localhost:3000/notes', note);
 
-    updateTODO = (id, task) =>
-        axios.put('http://localhost:3000/notes/' +  id, task);
+    deleteTODO = (id) => axios.delete('http://localhost:3000/notes/' + id);
+
+    updateTODO = (id, task) => axios.put('http://localhost:3000/notes/' + id, task);
 
     render() {
         const {notes} = this.state;
         return (
             <div>
-                <button className="add-note" onClick={this.addNote}>+</button>
+                <button className="add-note" onClick={this.addNote}>&#x2795;</button>
                 <Notes
                     notes={notes}
                     onNoteClick={this.activateNoteEdit}
-                    onEdit={this.editNote}
                     onDelete={this.deleteNote}
+                    onEdit={this.editNote}
                 />
             </div>
         );
     }
 
     addNote = () => {
-        this.addTODO(JSON.stringify('New task')).then((res) => {
-
-            this.setState({
-                notes: [
-                    ...this.state.notes,
-                    {
-                        id: res.data.id,
-                        task: 'New task'
-                    }
-                ]
+        this.addTODO({task: 'New task'})
+            .then((res) => {
+                this.setState({
+                    notes: [
+                        ...this.state.notes,
+                        {
+                            id: res.data.id,
+                            task: 'New task'
+                        }
+                    ]
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
             });
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
     }
 
     deleteNote = (id, e) => {
-
         e.stopPropagation();
         this.setState({
             notes: this.state.notes.filter(note => note.id != id)
@@ -73,11 +76,11 @@ export default class App extends React.Component {
                         editing: true
                     };
                 }
-
                 return note;
             })
         });
     }
+
     editNote = (id, task) => {
         this.setState({
             notes: this.state.notes.map(note => {
@@ -91,7 +94,7 @@ export default class App extends React.Component {
                 return note;
             })
         });
-        this.updateTODO(id, task);
+        this.updateTODO(id, {task});
     }
 }
 
