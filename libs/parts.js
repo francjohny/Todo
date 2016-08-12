@@ -11,7 +11,10 @@ exports.indexTemplate = function(options) {
         template: require('html-webpack-template'),
         title: options.title,
         appMountId: options.appMountId,
-        inject: false
+        inject: false,
+        files: {
+          css: ["https://fonts.googleapis.com/css?family=Raleway:400,300"],
+        }
       })
     ]
   };
