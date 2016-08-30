@@ -1,8 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 
-const Editable = ({editing, value, onEdit, className, ...props}) => {
-    if (value=="Redux" ||editing) {
+export default ({editing, value, onEdit, className, ...props}) => {
+    if (editing) {
         return <Edit className={className} value={value} onEdit={onEdit} {...props} />;
     }
 
@@ -28,6 +28,7 @@ class Edit extends React.Component {
             this.finishEdit(e);
         }
     }
+
     finishEdit = (e) => {
         const value = e.target.value;
 
@@ -36,7 +37,3 @@ class Edit extends React.Component {
         }
     }
 }
-
-Editable.Edit = Edit;
-
-export default Editable;

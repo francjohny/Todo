@@ -2,7 +2,7 @@ import React from 'react';
 
 export default (state, actions) => {
     if(typeof state === 'function' ||
-        (typeof state === 'object' && Object.keys(state).length)) {
+      (typeof state === 'object' && Object.keys(state).length)) {
         return target => connect(state, actions, target);
     }
 
@@ -15,12 +15,10 @@ function connect(state = () => {}, actions = {}, target) {
     class Connect extends React.Component {
         componentDidMount() {
             const {flux} = this.context;
-
             flux.FinalStore.listen(this.handleChange);
         }
         componentWillUnmount() {
             const {flux} = this.context;
-
             flux.FinalStore.unlisten(this.handleChange);
         }
         render() {
@@ -47,10 +45,8 @@ function connect(state = () => {}, actions = {}, target) {
 
 function composeStores(stores) {
     let ret = {};
-
     Object.keys(stores).forEach(k => {
         const store = stores[k];
-
         ret = Object.assign({}, ret, store.getState());
     });
 
